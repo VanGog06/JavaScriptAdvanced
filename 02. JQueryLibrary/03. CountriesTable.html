@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        td, th {
+            background: #DDD;
+            padding: 5px 10px;
+        }
+        input[type='text'] {
+            width: 60px;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+</head>
+<body>
+
+<table id="countriesTable">
+    <tr><th>Country</th><th>Capital</th><th>Action</th></tr>
+    <tr>
+        <td><input type="text" id="newCountryText" /></td>
+        <td><input type="text" id="newCapitalText" /></td>
+        <td><a href="#" id="createLink">[Create]</a></td>
+    </tr>
+</table>
+
+<script>
+    $(() => initializeTable());
+
+        function solve() {
+            return function() {
+
+                function initializeTable() {
+                    $('#createLink').click(createCountry);
+
+                    addCountry("Bulgaria", "Sofia");
+                    addCountry("Germany", "Berlin");
+                    addCountry("Russia", "Moscow");
+                    show();
+                    hide();
+
+                    function moveDown() {
+                        let deleteTr = $(this).parent().parent();
+                        deleteTr.fadeOut(function () {
+                            deleteTr.insertAfter(deleteTr.next());
+                            deleteTr.fadeIn();
+                            show();
+                            hide();
+                        });
+                    }
+
+                    function moveUp() {
+                        let moveTr = $(this).parent().parent();
+                        moveTr.fadeOut(function () {
+                            moveTr.insertBefore(moveTr.prev());
+                            moveTr.fadeIn();
+                            show();
+                            hide();
+                        });
+                    }
+
+                    function deleteRow() {
+                        let row = $(this).parent().parent();
+                        row.fadeOut(function () {
+                            row.remove();
+                            show();
+                            hide();
+                        });
+
+                    }
+
+                    function hide() {
+                        $('.down:last').hide();
+                        $('.up:first').hide();
+                    }
+
+                    function show() {
+                        $('.down').not(':last').show();
+                        $('.up').not(':first').show();
+                    }
+
+                    function createCountry() {
+                        let country = $('#newCountryText').val();
+                        let capital = $('#newCapitalText').val();
+                        addCountry(country, capital, true);
+                        $('#newCountryText').val('');
+                        $('#newCapitalText').val('');
+                        show();
+                        hide();
+                    }
+
+
+                    function addCountry(country, capital) {
+                        let row = $('<tr>')
+                                .append($("<td>").text(country))
+                                .append($("<td>").text(capital))
+                                .append($("<td>")
+                                        .append($("<a href='#' class='up'>[Up]</a>").click(moveUp))
+                                        .append(" ")
+                                        .append($("<a href='#' class='down'>[Down]</a>").click(moveDown))
+                                        .append(" ")
+                                        .append($("<a href='#' class='delete'>[Delete]</a>").click(deleteRow)));
+
+
+                        $('#countriesTable').append(row);
+
+                        show();
+                        hide();
+
+                        $('#newCountryText').val('');
+                        $('#newCapitalText').val('');
+                    }
+                }
+                }
+        }
+</script>
+
+</body>
+</html>

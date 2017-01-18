@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+</head>
+<body>
+
+<ul id="towns">
+    <li>Sofia</li>
+    <li>Pleven</li>
+    <li>Varna</li>
+    <li>Plovdiv</li>
+</ul>
+
+<input type="text" id="searchText" />
+<button>Search</button>
+<div id="result"></div>
+
+<script>
+    $(function() {
+        $('button').click(search);
+
+        function search() {
+            let counter = 0;
+            let searchText = $('#searchText').val();
+            let liItems = $('#towns li').toArray();
+
+            for (let li of liItems) {
+                if (li.textContent.includes(searchText)) {
+                    counter++;
+                    $(li).css('font-weight', 'bold');
+                } else {
+                    $(li).css('font-weight', '');
+                }
+            }
+
+            $('#result').text(counter + ' matches found.');
+        }
+    })
+</script>
+
+</body>
+</html>
